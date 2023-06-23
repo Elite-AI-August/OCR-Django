@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="description"
+            content="Extract or scan text from images in multiple languages- English Hindi  etc. Quickly Get Text from Image">
+        <title>Text Extractor Scan text from Image| OCR</title>
+        <link rel="stylesheet" href="/static/style.css">
+        <link href="http://fonts.cdnfonts.com/css/euclid-circular-a?styles=100037,100034,100036,100039,100031"
+            rel="stylesheet">
+        <link rel='stylesheet'
+            href='https://cdn-uicons.flaticon.com/uicons-regular-rounded/css/uicons-regular-rounded.css'>
+        <script src="/static/copy.js"></script>
+        <script src="/static/error.js"></script>
+        <link rel="shortcut icon" href="/static/assets/icons/slogoicon.png" type="icon">
+    </head>
+
+
+    <body class="bg-slate-50" style="font-family: 'Euclid Circular A', sans-serif;">
+        <header class="text-gray-600 body-font">
+            <div class="container mx-auto flex flex-wrap p-5 flex-col md:flex-row items-center">
+                <a class="flex title-font font-medium items-center text-gray-900 mb-4 md:mb-0">
+                    <img id="flogo" alt="Flogo" src="/static/assets/icons/FLOGO.jpg" width="300" >
+                </a>
+            </div>
+
+
+        </header>
+        <!-- error popup modal -->
+        {% if messages %}
+        {% for msg in messages %}
+        <div id="error-modal" class="flex animate-pulse w-full max-w-sm mx-auto overflow-hidden bg-white rounded-lg shadow-lg
+       fixed left-8 top-8">
+            <div class="flex items-center justify-center w-12 stroke-slate-900">
+                <svg class="w-6 h-6 text-slate-800 fill-current" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+                    <path
+                        d="M20 3.33331C10.8 3.33331 3.33337 10.8 3.33337 20C3.33337 29.2 10.8 36.6666 20 36.6666C29.2 36.6666 36.6667 29.2 36.6667 20C36.6667 10.8 29.2 3.33331 20 3.33331ZM21.6667 28.3333H18.3334V25H21.6667V28.3333ZM21.6667 21.6666H18.3334V11.6666H21.6667V21.6666Z" />
+                </svg>
+            </div>
+
+            <div class="px-4 py-2 -mx-3">
+                <div class="mx-3">
+                    <span class="font-semibold text-slate-800 ">Error</span>
+                    <p class="text-sm text-gray-600 ">{{msg}}</p>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+        {% endif %}
+        <!-- error popup modal -->
+
+        <section class="text-gray-600">
+            <div class="container px-5 py-24 mx-auto">
+                <div class="flex flex-col text-center w-full mb-12">
+                    <h1 style= 'font-family: "Pacifico", cursive' class="sm:text-7xl text-2xl font-medium mb-4 text-gray-900">TextScanX</h1>
+                    <p class="lg:w-2/3 mx-auto leading-relaxed text-xl">Transform Images into Text!</p>
+                </div>
+
+
+                <div class="container">
+                    <div class="buttons">
+                        <button id="upload-btn" onclick="document.getElementById('formFile').click()"
+                            class="custom-btn shadow-md mb-2">Upload
+                            Image <i class="fi fi-rr-upload"></i>
+                        </button>
+                        <form method="post" enctype="multipart/form-data" class="flex justify-center">
+                            {% csrf_token %}
+                            <input name="imagefile" re accept="image/*" type="file" id="formFile"
+                                style="display: none;">
+                            <button class="custom-btn shadow-md " disabled>
+                                <select name="language" id="languages" class="bg-transparent">
+                                    <option value="eng" selected>English</option>
+                                    <option value="tel">Telugu</option>
+                                    <option value="hin">Hindi</option>
+                                </select>
+                            </button>
+                            <button type="submit" class="custom-btn shadow-md bg-white">Scan <i
+                                    class="fi fi-rr-search"></i></button>
+                        </form>
+                    </div>
+                </div>
+
+
+                <!-- Uploaded image will be shown -->
+                {% if image %}
+                <div class="flex justify-center ease-out m-5 rounded-2xl duration-300 h-96">
+                    <img class="justify-center rounded-2xl hover:scale-105 stroke-white stroke-2 duration-500"
+                        src="data:image/png;base64, {{ image }}">
+                </div>
+                {% endif %}
+                <!-- Uploaded image will be shown -->
+
+                <!-- OCR text will be shown -->
+                {% if ocr %}
+                <div class=" ease-out bg-white text-slate-800 rounded-2xl hover:shadow-lg p-6 mt-3 duration-300 w-auto">
+                    <p id="ocrtext" class="text-lg mt-2  mb-8 text-center ">{{ ocr }}</p>
+                    <button id="copybtn" onclick="copy()" class="button">Copy Text
+                        <i class="fi fi-rr-duplicate"></i>
+                    </button>
+                </div>
+                {% endif %}
+                <!-- OCR text will be shown -->
+            </div>
+
+
+        </section>
+        
+    </body>
+
+
+</html>
